@@ -1,3 +1,8 @@
 <h2 id="title">Welcome to Ember.js</h2>
 
 {{outlet}}
+
+Lat: {{input type="text" value=lat}}
+Lng: {{input type="text" value=lng}}
+
+{{street-view lat=lat lng=lng zoomControl=false}}

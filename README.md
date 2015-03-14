@@ -1,17 +1,40 @@
 # Ember-street-view
 
-This README outlines the details of collaborating on this Ember addon.
+Google street view component for emberjs.
 
-## Installation
+## Install
+
+```
+ember install:addon ember-street-view
+```
+
+This addon will inject google maps API in `<script>` tag by default.
+If you don't want this feature, add this to your `config/environment.js`
+
+```javascript
+// config/environment.js
+
+ENV.emberStreetView = {
+  includeGoogleScriptTag: false
+}
+```
+
+## Usage
+
+In your Handlebars templates:
+```
+{{street-view lat=lat lng=lng}}
+```
+
+## Demo
+
+Check out the demo on [github pages](http://ahmadsoe.github.io/ember-street-view/ "Ember-street-view demo"). Or:
 
 * `git clone` this repository
 * `npm install`
 * `bower install`
-
-## Running
-
 * `ember server`
-* Visit your app at http://localhost:4200.
+* Visit the demo at http://localhost:4200.
 
 ## Running Tests
 
