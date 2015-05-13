@@ -1,6 +1,6 @@
 {
   "name": "ember-street-view",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Goggle street view component for ember",
   "directories": {
     "doc": "doc",
