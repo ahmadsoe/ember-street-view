@@ -5,7 +5,7 @@ Google street view component for emberjs.
 ## Install
 
 ```
-ember install:addon ember-street-view
+ember install ember-street-view
 ```
 
 This addon will inject google maps API in `<script>` tag by default.
