@@ -1,6 +1,13 @@
 import Ember from 'ember';
 import layout from '../templates/components/street-view';
 
+const {
+  get: get,
+  set: set,
+  on,
+  observer
+} = Ember;
+
 export default Ember.Component.extend({
   layout: layout,
 
@@ -23,18 +30,18 @@ export default Ember.Component.extend({
   radius: 50,
   panorama: null,
 
-  visibleDidChanged: function() {
+  visibleDidChanged: observer('visible', function() {
     Ember.run.scheduleOnce('afterRender', this, function() {
-      var panorama = this.get('panorama');
-      panorama.setVisible(this.get('visible'));
+      var panorama = get(this, 'panorama');
+      panorama.setVisible(get(this, 'visible'));
     });
-  }.observes('visible'),
+  }),
 
-  latLngDidChanged: function() {
-    var panorama = this.get('panorama');
-    var radius = this.get('radius');
+  latLngDidChanged: observer('lat', 'lng', function() {
+    var panorama = get(this, 'panorama');
+    var radius = get(this, 'radius');
     var service = new google.maps.StreetViewService();
-    var position = new google.maps.LatLng(this.get('lat'), this.get('lng'));
+    var position = new google.maps.LatLng(get(this, 'lat'), get(this, 'lng'));
 
     service.getPanoramaByLocation(position, radius, function(result, status) {
       if (status === google.maps.StreetViewStatus.OK) {
@@ -45,24 +52,24 @@ export default Ember.Component.extend({
         panorama.setVisible(false);
       }
     });
-  }.observes('lat', 'lng'),
+  }),
 
-  initStreetView: function() {
-    var position = new google.maps.LatLng(this.get('lat'), this.get('lng'));
+  initStreetView: on('didInsertElement', function() {
+    var position = new google.maps.LatLng(get(this, 'lat'), get(this, 'lng'));
 
     var options = {
       position: position,
-      addressControl: this.get('addressControl'),
-      clickToGo: this.get('clickToGo'),
-      disableDefaultUI: this.get('disableDefaultUI'),
-      disableDoubleClickZoom: this.get('disableDoubleClickZoom'),
-      enableCloseButton: this.get('enableCloseButton'),
-      imageDateControl: this.get('imageDateControl'),
-      linksControl: this.get('linksControl'),
-      panControl: this.get('panControl'),
-      scrollwheel: this.get('scrollwheel'),
-      visible: this.get('visible'),
-      zoomControl: this.get('zoomControl')
+      addressControl: get(this, 'addressControl'),
+      clickToGo: get(this, 'clickToGo'),
+      disableDefaultUI: get(this, 'disableDefaultUI'),
+      disableDoubleClickZoom: get(this, 'disableDoubleClickZoom'),
+      enableCloseButton: get(this, 'enableCloseButton'),
+      imageDateControl: get(this, 'imageDateControl'),
+      linksControl: get(this, 'linksControl'),
+      panControl: get(this, 'panControl'),
+      scrollwheel: get(this, 'scrollwheel'),
+      visible: get(this, 'visible'),
+      zoomControl: get(this, 'zoomControl')
     };
 
     var panorama = new google.maps.StreetViewPanorama(
@@ -70,10 +77,10 @@ export default Ember.Component.extend({
       options
     );
 
-    this.set('panorama', panorama);
-  }.on('didInsertElement'),
+    set(this, 'panorama', panorama);
+  }),
 
-  destroyStreetView: function() {
-    this.set('panorama', null);
-  }.on('willDestroyElement')
+  destroyStreetView: on('willDestroyElement', function() {
+    set(this, 'panorama', null);
+  })
 });
